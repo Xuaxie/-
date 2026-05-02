@@ -14,8 +14,6 @@ var ai_sets = 0
 @onready var button_attack = $Button_attack
 @onready var button_defence = $Button_defence
 @onready var button_charge = $Button_charge
-@onready var label_score: RichTextLabel = $Label_score
-@onready var label_rule: RichTextLabel = $Label_rule
 
 func _ready() -> void:
 	_run_automated_tests()
@@ -263,24 +261,24 @@ func _play_round(player_move: int):
 	
 	# 更新界面
 	if set_winner != "":
-		label_score.text = "玩家出了：" + player_move_name + \
+		$Label_score.text = "玩家出了：" + player_move_name + \
 							"\nAI出了：" + ai_move_name + \
 							"\n结果：" + result_text + \
 							"\n" + set_winner + "\n" + \
-							"[color=blue]本局比分：[/color]" + str(player_score) + " : " + str(ai_score)
+							"本局比分：" + str(player_score) + " : " + str(ai_score)
 		_update_rule_label()
 		_reset_set()
 	else:
-		label_score.text = "玩家出了：" + player_move_name + \
+		$Label_score.text = "玩家出了：" + player_move_name + \
 							"\nAI出了：" + ai_move_name + \
 							"\n结果：" + result_text + \
-							"\n[color=blue]本局比分：[/color]" + str(player_score) + " : " + str(ai_score)
+							"\n本局比分：" + str(player_score) + " : " + str(ai_score)
 	
 	ai_controller.update_ai_state(player_move, ai_move, ai_last_result)
 	last_player_move = player_move
 
 func _update_rule_label():
-	label_rule.text = "[color=yellow]玩法规则：\n攻击克制蓄力\n蓄力克制格挡\n格挡克制攻击[/color]\n战绩：[color=green]胜利 " + str(player_sets) + " 次[/color]，[color=red]失败 " + str(ai_sets) + " 次[/color]"
+	$Label_rule.text = "玩法规则：\n攻击克制蓄力\n蓄力克制格挡\n格挡克制攻击\n战绩：胜利 " + str(player_sets) + " 次，失败 " + str(ai_sets) + " 次"
 
 func _reset_set():
 	player_score = 0
@@ -302,7 +300,7 @@ func _reset_game():
 	ai_score = 0
 	ai_last_result = ""
 	last_player_move = -1
-	label_score.text = ""
+	$Label_score.text = ""
 	button_attack.disabled = false
 	button_defence.disabled = false
 	button_charge.disabled = false
