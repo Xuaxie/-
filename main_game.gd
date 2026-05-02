@@ -18,7 +18,7 @@ var ai_sets = 0
 func _ready() -> void:
 	_run_automated_tests()
 	_update_rule_label()
-	_reset_game()
+	_on_reset_pressed()
 
 func _run_automated_tests():
 	print("\n=== 开始 AI 状态机自动化测试 ===\n")
@@ -252,12 +252,15 @@ func _play_round(player_move: int):
 	
 	# 检查小局是否结束
 	var set_winner = ""
+	var game_over = false
 	if player_score >= 4:
 		player_sets += 1
-		set_winner = "玩家拿下本局！"
+		set_winner = "游戏结束！玩家获胜！"
+		game_over = true
 	elif ai_score >= 4:
 		ai_sets += 1
-		set_winner = "AI拿下本局！"
+		set_winner = "游戏结束！AI获胜！"
+		game_over = true
 	
 	# 更新界面
 	if set_winner != "":
@@ -267,7 +270,12 @@ func _play_round(player_move: int):
 							"\n" + set_winner + "\n" + \
 							"本局比分：" + str(player_score) + " : " + str(ai_score)
 		_update_rule_label()
-		_reset_set()
+		if game_over:
+			button_attack.disabled = true
+			button_defence.disabled = true
+			button_charge.disabled = true
+		else:
+			_reset_set()
 	else:
 		$Label_score.text = "玩家出了：" + player_move_name + \
 							"\nAI出了：" + ai_move_name + \
@@ -293,9 +301,6 @@ func _process(delta: float) -> void:
 
 
 func _on_reset_pressed() -> void:
-	_reset_game()
-
-func _reset_game():
 	player_score = 0
 	ai_score = 0
 	ai_last_result = ""
@@ -306,3 +311,10 @@ func _reset_game():
 	button_charge.disabled = false
 	ai_controller.reset()
 	_update_rule_label()
+
+func _on_buttonre_pressed() -> void:
+	_on_reset_pressed()
+
+
+func _on_resetbutton_pressed() -> void:
+	pass # Replace with function body.
