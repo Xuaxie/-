@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bcqxo758jcvya"]
 
 [ext_resource type="Script" uid="uid://bgr6go1p3oeyw" path="res://main_game.gd" id="1_e2o6t"]
-[ext_resource type="Script" uid="uid://5k66sfednsej" path="res://ai_controller.gd" id="2_feb5d"]
+[ext_resource type="Script" uid="uid://c8wtkdlndi4ks" path="res://ai_controller.gd" id="2_feb5d"]
 
 [node name="Game" type="Control" unique_id=134535708]
 layout_mode = 3
@@ -44,7 +44,7 @@ offset_right = 378.0
 offset_bottom = 452.0
 text = "重赛"
 
-[node name="Label_score" type="Label" parent="." unique_id=1039886304]
+[node name="Label_score" type="RichTextLabel" parent="." unique_id=1039886304]
 layout_mode = 0
 offset_left = 278.0
 offset_top = 269.0
@@ -55,16 +55,18 @@ text = "得分："
 [node name="AIController" type="Node" parent="." unique_id=192802881]
 script = ExtResource("2_feb5d")
 
-[node name="Label_rule" type="Label" parent="." unique_id=136521181]
+[node name="Label_rule" type="RichTextLabel" parent="." unique_id=136521181]
 layout_mode = 0
-offset_left = 311.0
-offset_top = 72.0
-offset_right = 407.0
-offset_bottom = 147.0
-text = "攻击克制蓄力
+offset_left = 313.0
+offset_top = 43.0
+offset_right = 409.0
+offset_bottom = 144.0
+text = "玩法规则：
+攻击克制蓄力
 蓄力克制格挡
 格挡克制攻击"
 
 [connection signal="pressed" from="Button_attack" to="." method="_on_attack_pressed"]
 [connection signal="pressed" from="Button_defence" to="." method="_on_defence_pressed"]
 [connection signal="pressed" from="Button_charge" to="." method="_on_charge_pressed"]
+[connection signal="pressed" from="Button-re" to="." method="_on_reset_pressed"]

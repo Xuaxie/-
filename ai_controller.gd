@@ -71,6 +71,11 @@ func update_ai_state(player_move: int, ai_move: int, result: String):
 		ai_state = "A"
 		sub_round = 2
 
+func reset():
+	ai_state = "A"
+	sub_round = 1
+	stubborn_move = -1
+
 func _ready() -> void:
 	pass
 

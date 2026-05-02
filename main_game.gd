@@ -7,10 +7,20 @@ var player_score = 0
 var ai_score = 0
 var ai_last_result = ""
 var last_player_move = -1
+var max_rounds = 7
+var player_sets = 0
+var ai_sets = 0
 
-# Called when the node enters the scene tree for the first time.
+@onready var button_attack = $Button_attack
+@onready var button_defence = $Button_defence
+@onready var button_charge = $Button_charge
+@onready var label_score: RichTextLabel = $Label_score
+@onready var label_rule: RichTextLabel = $Label_rule
+
 func _ready() -> void:
 	_run_automated_tests()
+	_update_rule_label()
+	_reset_game()
 
 func _run_automated_tests():
 	print("\n=== 开始 AI 状态机自动化测试 ===\n")
@@ -241,13 +251,43 @@ func _play_round(player_move: int):
 		0:
 			result_text = "平局！"
 			ai_last_result = "draw"
-		# 将更新比分和拼接显示完全分开
-	$Label_score.text = "玩家出了：" + player_move_name + \
-						"\nAI出了：" + ai_move_name + \
-						"\n结果：" + result_text + \
-						"\n当前比分：玩家 " + str(player_score) + " : " + str(ai_score) + " AI"
+	
+	# 检查小局是否结束
+	var set_winner = ""
+	if player_score >= 4:
+		player_sets += 1
+		set_winner = "玩家拿下本局！"
+	elif ai_score >= 4:
+		ai_sets += 1
+		set_winner = "AI拿下本局！"
+	
+	# 更新界面
+	if set_winner != "":
+		label_score.text = "玩家出了：" + player_move_name + \
+							"\nAI出了：" + ai_move_name + \
+							"\n结果：" + result_text + \
+							"\n" + set_winner + "\n" + \
+							"[color=blue]本局比分：[/color]" + str(player_score) + " : " + str(ai_score)
+		_update_rule_label()
+		_reset_set()
+	else:
+		label_score.text = "玩家出了：" + player_move_name + \
+							"\nAI出了：" + ai_move_name + \
+							"\n结果：" + result_text + \
+							"\n[color=blue]本局比分：[/color]" + str(player_score) + " : " + str(ai_score)
+	
 	ai_controller.update_ai_state(player_move, ai_move, ai_last_result)
 	last_player_move = player_move
+
+func _update_rule_label():
+	label_rule.text = "[color=yellow]玩法规则：\n攻击克制蓄力\n蓄力克制格挡\n格挡克制攻击[/color]\n战绩：[color=green]胜利 " + str(player_sets) + " 次[/color]，[color=red]失败 " + str(ai_sets) + " 次[/color]"
+
+func _reset_set():
+	player_score = 0
+	ai_score = 0
+	ai_last_result = ""
+	last_player_move = -1
+	ai_controller.reset()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -255,4 +295,16 @@ func _process(delta: float) -> void:
 
 
 func _on_reset_pressed() -> void:
-	pass # Replace with function body.
+	_reset_game()
+
+func _reset_game():
+	player_score = 0
+	ai_score = 0
+	ai_last_result = ""
+	last_player_move = -1
+	label_score.text = ""
+	button_attack.disabled = false
+	button_defence.disabled = false
+	button_charge.disabled = false
+	ai_controller.reset()
+	_update_rule_label()
