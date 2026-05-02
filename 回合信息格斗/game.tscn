@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://bcqxo758jcvya"]
+
+[ext_resource type="Script" uid="uid://bgr6go1p3oeyw" path="res://main_game.gd" id="1_e2o6t"]
+[ext_resource type="Script" uid="uid://c8wtkdlndi4ks" path="res://ai_controller.gd" id="2_feb5d"]
+
+[node name="Game" type="Control" unique_id=134535708]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_e2o6t")
+
+[node name="Button_attack" type="Button" parent="." unique_id=896512758]
+layout_mode = 0
+offset_left = 256.0
+offset_top = 185.0
+offset_right = 296.0
+offset_bottom = 216.0
+text = "攻击"
+
+[node name="Button_defence" type="Button" parent="." unique_id=1456526054]
+layout_mode = 0
+offset_left = 339.0
+offset_top = 184.0
+offset_right = 379.0
+offset_bottom = 215.0
+text = "格挡"
+
+[node name="Button_charge" type="Button" parent="." unique_id=1675168463]
+layout_mode = 0
+offset_left = 427.0
+offset_top = 184.0
+offset_right = 467.0
+offset_bottom = 215.0
+text = "蓄力"
+
+[node name="Button-re" type="Button" parent="." unique_id=673061880]
+layout_mode = 0
+offset_left = 340.0
+offset_top = 406.0
+offset_right = 380.0
+offset_bottom = 437.0
+text = "重赛"
+
+[node name="Label_score" type="Label" parent="." unique_id=1049806539]
+layout_mode = 0
+offset_left = 251.0
+offset_top = 270.0
+offset_right = 299.0
+offset_bottom = 293.0
+text = "得分："
+
+[node name="AIController" type="Node" parent="." unique_id=192802881]
+script = ExtResource("2_feb5d")
+
+[node name="Label_rule" type="Label" parent="." unique_id=238000006]
+layout_mode = 0
+offset_left = 314.0
+offset_top = 48.0
+offset_right = 410.0
+offset_bottom = 123.0
+text = "攻击克制蓄力
+蓄力克制格挡
+格挡克制攻击"
+
+[connection signal="pressed" from="Button_attack" to="." method="_on_attack_pressed"]
+[connection signal="pressed" from="Button_defence" to="." method="_on_defence_pressed"]
+[connection signal="pressed" from="Button_charge" to="." method="_on_charge_pressed"]
+[connection signal="pressed" from="Button-re" to="." method="_on_reset_pressed"]
